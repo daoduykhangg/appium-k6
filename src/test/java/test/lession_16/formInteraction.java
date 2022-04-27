@@ -1,4 +1,4 @@
-package test;
+package test.lession_16;
 
 import driver.DriverFactory;
 import driver.Platforms;
