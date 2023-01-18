@@ -36,7 +36,7 @@ public class DriverFactory implements MobileCapabilityTypeEx {
                     break;
             }
 
-            appiumDriver.manage().timeouts().implicitlyWait(1L, TimeUnit.SECONDS);
+            appiumDriver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
         } catch (Exception e) {
             exception = e;
         }
