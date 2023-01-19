@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="REgression" verbose="1">
+    <test name="Authentication">
+        <classes>
+            <class name="test.Lesson19.TestLogin"/>
+        </classes>
+    </test>
+
+</suite>
