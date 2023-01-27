@@ -3,6 +3,7 @@ package test_flows;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.components.BottonNavComponent;
+import models.pages.HomePage;
 import models.pages.LoginPage;
 
 public class BaseFlow {
@@ -13,8 +14,12 @@ public class BaseFlow {
     }
 
     public void goToLoginScreen() {
-        LoginPage loginPage = new LoginPage(appiumDriver);
-        BottonNavComponent bottonNavComponent = loginPage.bottonNavComponent();
+        HomePage homePage = new HomePage(appiumDriver);
+        BottonNavComponent bottonNavComponent = homePage.bottonNavComponent();
         bottonNavComponent.clickToLoginNavButton();
+    }
+
+    public void goToFormScreen() {
+        new HomePage(appiumDriver).bottonNavComponent().clickToFormsNavButton();
     }
 }

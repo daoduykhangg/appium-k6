@@ -4,27 +4,19 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.components.BottonNavComponent;
 import models.components.LoginComponent;
-import models.components.LoginDialogComponent;
 import models.components.SignupComponent;
 
-public class LoginPage {
+public class HomePage {
     private final AppiumDriver<MobileElement> appiumDriver;
 
-    public LoginPage(AppiumDriver<MobileElement> appiumDriver) {
+    public HomePage(AppiumDriver<MobileElement> appiumDriver) {
         this.appiumDriver = appiumDriver;
     }
 
     public BottonNavComponent bottonNavComponent() {
         return new BottonNavComponent(appiumDriver);
     }
-
-    public LoginComponent loginComponent() {
-        return new LoginComponent(appiumDriver);
-    }
-    public LoginDialogComponent loginDialogComponent() {
-        return new LoginDialogComponent(appiumDriver);
-    }
-
+    
     public SignupComponent signupComponent() {
         return new SignupComponent(appiumDriver);
     }
