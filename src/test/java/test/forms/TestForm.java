@@ -1,7 +1,6 @@
 package test.forms;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.BaseTest;
 import test_flows.forms.FormFlow;
@@ -9,8 +8,9 @@ import test_flows.forms.FormFlow;
 public class TestForm extends BaseTest {
     @Test
     public void testFormsPage() {
-        FormFlow formFlow = new FormFlow(appiumDriver);
+        FormFlow formFlow = new FormFlow(getAppiumDriver());
         formFlow.goToFormScreen();
         formFlow.fieldtheForm();
+        Assert.fail("[ERR]");
     }
 }

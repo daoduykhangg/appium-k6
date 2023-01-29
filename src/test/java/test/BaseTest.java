@@ -11,26 +11,40 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class BaseTest {
-    protected static AppiumDriver<MobileElement> appiumDriver;
+    private static final List<DriverFactory> driverThreadPool = Collections.synchronizedList(new ArrayList<>());
+    private static ThreadLocal<DriverFactory> driverThread;
+    private String udid;
+    private String systemPort;
 
     @BeforeTest
-    public void initAppiumDriver() {
-        appiumDriver = DriverFactory.getDriver(Platforms.android);
+    @Parameters({"udid", "systemPort"})
+    public void initAppiumDriver(String udid, String systemPort) {
+        this.udid = udid;
+        this.systemPort = systemPort;
+        driverThread = ThreadLocal.withInitial(() -> {
+            DriverFactory driverThread = new DriverFactory();
+            driverThreadPool.add(driverThread);
+            return driverThread;
+        });
+    }
+
+    protected AppiumDriver<MobileElement> getAppiumDriver() {
+        return driverThread.get().getDriver(Platforms.android, udid, systemPort);
     }
 
     @AfterTest(alwaysRun = true)
     public void quitAppiumDriver() {
-        appiumDriver.quit();
+        driverThread.get().quitAppiumDriver();
     }
 
     @AfterMethod
@@ -47,7 +61,7 @@ public class BaseTest {
             String dateTaken = y + "-" + m + "-" + d + "-" + h + "-" + min + "-" + sec;
             String fileLocation = System.getProperty("user.dir") + "/screenshots/".concat(testMethodName).concat("-").concat(dateTaken).concat(".png");
             try {
-                File screenShort = appiumDriver.getScreenshotAs(OutputType.FILE);
+                File screenShort = driverThread.get().getDriver(Platforms.android, udid, systemPort).getScreenshotAs(OutputType.FILE);
                 FileUtils.copyFile(screenShort, new File(fileLocation));
 
                 Path screenShortContentPath = Paths.get(fileLocation);
