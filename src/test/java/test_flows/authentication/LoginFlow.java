@@ -3,7 +3,6 @@ package test_flows.authentication;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.components.LoginComponent;
-import models.components.LoginDialogComponent;
 import models.pages.LoginPage;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.testng.asserts.SoftAssert;
@@ -57,14 +56,14 @@ public class LoginFlow extends BaseFlow {
     private void verifyInCorrectPassword(LoginComponent loginComponent) {
         String actualInvalidPasswordStr = loginComponent.getInvalidPasswordStr();
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualInvalidPasswordStr, "Please enter at least 8 characters.");
+        softAssert.assertEquals(actualInvalidPasswordStr, "Please enter at least 8 characters");
         softAssert.assertAll();
     }
 
     private void verifyInCorrectEmail(LoginComponent loginComponent) {
         String actualInvalidEmailStr = loginComponent.getInvalidEmailStr();
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualInvalidEmailStr, "Please enter a valid email address.");
+        softAssert.assertEquals(actualInvalidEmailStr, "Please enter a valid email address");
         softAssert.assertAll();
     }
 }

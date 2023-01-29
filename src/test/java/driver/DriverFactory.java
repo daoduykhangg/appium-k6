@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class DriverFactory implements MobileCapabilityTypeEx {
+    private AppiumDriver<MobileElement> appiumDriver;
+
     public static AppiumDriver<MobileElement> getDriver(Platforms platform) {
         if (platform == null) {
             throw new IllegalArgumentException("Platform can't be null, you can provide one of these:" + Arrays.toString(Platforms.values()));
@@ -44,5 +46,50 @@ public class DriverFactory implements MobileCapabilityTypeEx {
             throw new RuntimeException(exception.getMessage());
         }
         return appiumDriver;
+    }
+
+    public  AppiumDriver<MobileElement> getDriver(Platforms platform, String udid, String systemPort) {
+        if (appiumDriver == null) {
+            if (platform == null) {
+                throw new IllegalArgumentException("Platform can't be null, you can provide one of these:" + Arrays.toString(Platforms.values()));
+            }
+
+            Exception exception = null;
+            try {
+                DesiredCapabilities desiredCaps = new DesiredCapabilities();
+                desiredCaps.setCapability(PLATFORM_NAME, "Android");
+                desiredCaps.setCapability(AUTOMATION_NAME, "uiautomator2");
+                desiredCaps.setCapability(UDID, udid);
+                desiredCaps.setCapability(APP_PACKAGE, "com.wdiodemoapp");
+                desiredCaps.setCapability(APP_ACTIVITY, ".MainActivity t13");
+                desiredCaps.setCapability(SYSTEM_PORT, Integer.parseInt(systemPort));
+
+//                URL targetServer = new URL("http://localhost:4723/wd/hub");
+                URL targetServer = new URL("http://192.168.1.106:4444/wd/hub");
+                switch (platform) {
+                    case android:
+                        appiumDriver = new AndroidDriver<MobileElement>(targetServer, desiredCaps);
+                        break;
+                    case ios:
+                        appiumDriver = new IOSDriver<MobileElement>(targetServer, desiredCaps);
+                        break;
+                }
+
+                appiumDriver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                exception = e;
+            }
+            if (appiumDriver == null) {
+                throw new RuntimeException(exception.getMessage());
+            }
+        }
+        return appiumDriver;
+    }
+
+    public void quitAppiumDriver() {
+        if (appiumDriver != null) {
+            appiumDriver.quit();
+            appiumDriver = null;
+        }
     }
 }
